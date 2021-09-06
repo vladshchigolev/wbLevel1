@@ -1,0 +1,30 @@
+В Go нет перегрузки методов. Предлагается просто давать разные имена методам:
+
+func (<receiver>) SearchInts(a []int, x int) bool // поиск значения в массиве целых чисел
+func (<receiver>) SearchStrings(a []string, x string) bool // // поиск значения в массиве строк
+====================================================================================================================
+Иной подход — это использование интерфейсов:
+
+Создадим интерфейс и функцию для поиска:
+
+type Slice interface { // создадим тип "слайс значений, типы которых реализуют следующие методы"
+    Len() int    // и перечисляем методы, необходимые для поддержки данного интерфейса
+    Get(int) interface{}
+}
+
+Search(slice Slice, x interface{}) bool
+
+После чего создадим 2 типа:
+type Ints []int
+type Strings []string
+
+И сделаем каждый из типов поддерживающим этот интерфейс.
+После этого можно использовать поиск и по строкам, и по числам:
+
+var strings Strings = []string{"one", "two", "three"}
+fmt.Println(Search(strings, "one")) // true
+fmt.Println(Search(strings, "four")) // false
+
+var ints Ints = []int{0, 1, 2, 3, 4, 5}
+fmt.Println(Search(ints, 0)) // true
+fmt.Println(Search(ints, 10)) // false

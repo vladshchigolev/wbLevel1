@@ -8,6 +8,7 @@ import "fmt"
 // Интерфейсы в Go позволяют определять переменные и
 // параметры функций, способные хранить ЛЮБОЙ тип при условии, что этот
 // тип определяет некоторые методы (поддерживает интерфейс)
+// интерфейсы в go декларируют полу-абстрактный тип (экземпляры этого типа всё же ВОЗМОЖНО создать)
 
 type TapePlayer struct {
 	Batteries string
@@ -42,7 +43,7 @@ type Player interface {
 	Stop()
 }
 
-func playList(device Player, songs []string) {
+func playList(device Player, songs []string) { // параметр device, имеет тип интерфейса, => принимает значения любого типа, поддерживающего его
 	for _, song := range songs {
 		device.Play(song)
 	}
